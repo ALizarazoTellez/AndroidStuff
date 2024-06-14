@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,13 +19,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +47,13 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainComponent() {
-    val hour by remember {
-        mutableStateOf("0")
+    var time by remember { mutableStateOf(getLocalTime()) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            time = getLocalTime()
+            delay(1000)
+        }
     }
 
     Scaffold(
@@ -72,11 +83,15 @@ fun MainComponent() {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(text = "Current hour:", fontSize = 30.sp)
-                    Text(text = hour, fontSize = 25.sp)
+                    Text(text = "${time.hour}:${time.minute}:${time.second}", fontSize = 25.sp)
                 }
             }
         }
     }
+}
+
+fun getLocalTime(): LocalTime {
+    return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
 }
 
 @Preview(showBackground = true, showSystemUi = true)
