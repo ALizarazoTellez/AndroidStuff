@@ -6,8 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -31,9 +38,17 @@ fun MainComponent() {
     Scaffold(
         topBar = { TopAppBar(title = { Text(text = "Stuff") }) },
         bottomBar = {
-            BottomAppBar(actions = {
-                Text(text = "Something...")
-            })
+            NavigationBar {
+                NavigationBarItem(
+                    selected = true,
+                    onClick = { /*TODO*/ },
+                    icon = { Icon(Icons.Filled.Home, contentDescription = "Home") })
+
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { /*TODO*/ },
+                    icon = { Icon(Icons.Filled.Info, contentDescription = "Info") })
+            }
         },
     ) { innerPadding ->
         Column(
